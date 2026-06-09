@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+
+.DS_Store
+.ipynb_checkpoints/
+
+
+build/
+dist/
+*.egg-info/
+
+
+*.log
+
+# Generated analysis outputs
+results/**/generated_trajectories/*.csv
+results/**/models/*.pt

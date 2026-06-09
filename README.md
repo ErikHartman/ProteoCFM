@@ -1,1 +1,61 @@
-# Learning high-resolution temporal proteomics disease trajectories with flow matching
+# Conditional flow matching for reconstructing disease-associated proteome trajectories and protein velocities from time-ordered proteomics data
+
+This repository contains the code and analysis notebooks for the project "Proteome velocity reveals disease trajectories through flow matching".
+
+## Contents
+
+- `proteoflow/`: Python package for loading proteomics data, sampling time-ordered training pairs, fitting conditional flow-matching models, and generating trajectories.
+- `notebooks/sepsis/`: preprocessing, baseline analysis, trajectory generation, and trajectory analysis for the murine sepsis proteomics data.
+- `notebooks/covid/`: preprocessing, trajectory generation, and trajectory analysis for the COVID-19 plasma proteomics data.
+- `data/`: public COVID-19 and sepsis input data.
+- `results/`: generated trajectories, training metrics, and trained model checkpoints, if included in the archived release.
+
+## Environment
+
+Environment can be created from `requirements.txt` and `pyproject.toml`. The analysis was run on Python 3.12.11 on macOS 26.5.1 arm64. For a clean local setup:
+
+```bash
+cd proteocfm
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e .
+python -m ipykernel install --user --name proteocfm --display-name "Python (proteocfm)"
+```
+
+## Reproducing The Analyses
+
+Run notebooks from the repository root so that relative paths resolve correctly.
+
+Order for the analysis:
+
+
+COVID-19:
+1. `notebooks/covid/preprocess.ipynb`
+2. `notebooks/covid/generate_trajectories.ipynb`
+3. `notebooks/covid/analyze_trajectories.ipynb`
+
+Sepsis:
+1. `notebooks/sepsis/preprocess.ipynb`
+2. `notebooks/sepsis/generate_trajectories.ipynb`
+3. `notebooks/sepsis/analyze_trajectories.ipynb`
+4. `notebooks/sepsis/baseline.ipynb`
+
+Trajectory-generation notebooks train five independently seeded model replicates using seeds 42-46 and write per-replicate trajectory CSVs under `results/`.
+
+
+## Data
+
+COVID-19 data were obtained from Demichev et al., "A time-resolved proteomic and prognostic map of COVID-19" (Cell Systems, 2021), https://doi.org/10.1016/j.cels.2021.05.005. The repository includes processed COVID-19 abundance and metadata tables plus the raw public source files used by the preprocessing notebook.
+
+The murine sepsis proteomics data were 
+
+
+## License
+
+MIT License.
+
+## Reproducibility Notes
+
+Random seeds are set in the notebooks and package utilities for Python, NumPy, and PyTorch where applicable. Data splits and PCA steps use fixed random states. Some operations in the numerical stack, especially PyTorch kernels, threaded linear algebra, and UMAP-related computations, can still be nondeterministic across hardware, operating systems, or dependency builds. Small run-to-run differences in generated trajectories may therefore occur even with fixed seeds; reported biological interpretations should be based on aggregate patterns across independently seeded model replicates.
